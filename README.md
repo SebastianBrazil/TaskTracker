@@ -4,6 +4,6 @@ Sebastian Breve-Sanchez
 
 Task Tracker
 
-Desc
+This website's purpose is to keep track of tasks that are created by the user.
 
-2/12/24 pt 1: Created absolute basics for layout and display elements.
+2/12/24 pt 1: Created absolute basics for layout and display elements. 2/12/24 pt 2: I got the creation of the tasks and local storage to work, but I was unable to have the setting to modify the cards.

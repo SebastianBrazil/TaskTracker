@@ -1,12 +1,19 @@
 import { getLocalStorage, saveToLocalStorage, removeFromLocalStorage } from "./localStorage.js";
 
 let submitTask = document.getElementById("submitTask");
+let submitModification = document.getElementById("submitModification");
+let remove = document.getElementById("remove");
 
 let nameTask = document.getElementById("name");
 let statusTask = document.getElementById("status");
 let priorityTask = document.getElementById("priority");
 let dueDateTask = document.getElementById("dueDate");
 let descriptionTask = document.getElementById("description");
+let MnameTask = document.getElementById("Mname");
+let MstatusTask = document.getElementById("Mstatus");
+let MpriorityTask = document.getElementById("Mpriority");
+let MdueDateTask = document.getElementById("MdueDate");
+let MdescriptionTask = document.getElementById("Mdescription");
 
 let highPriTD = document.getElementById("highPriTD");
 let medPriTD = document.getElementById("medPriTD");
@@ -17,6 +24,8 @@ let lowPriIP = document.getElementById("lowPriIP");
 let highPriC = document.getElementById("highPriC");
 let medPriC = document.getElementById("medPriC");
 let lowPriC = document.getElementById("lowPriC");
+
+let isBeingModified = "";
 
 function callTasks() {
     highPriC.innerHTML = "";
@@ -79,15 +88,19 @@ function loadTasks(nameTaskL, statusTaskL, priorityTaskL, dueDateTaskL, descript
     taskDescription.textContent = "Description: " + descriptionTaskL;
 
     let taskOptions = document.createElement("button");
-    // taskOptions.setAttribute("id", "defaultModalButton");
-    // taskOptions.setAttribute("data-modal-target", "defaultModal");
-    // taskOptions.setAttribute("data-modal-toggle", "defaultModal");
-    // taskOptions.type = "button";
+    taskOptions.setAttribute("id", "modifytModalButton");
+    taskOptions.setAttribute("data-modal-target", "modifyModal");
+    taskOptions.setAttribute("data-modal-toggle", "modifyModal");
+    taskOptions.type = "button";
     taskOptions.className = "bg-red-400 w-[90%] mb-3 rounded-lg";
-    taskOptions.innerText = "Task Options (ONLY REOMVES)";
+    taskOptions.innerText = "Task Options";    
     taskOptions.addEventListener('click', function (e) {
-        removeFromLocalStorage(saveToStorageL);
-        callTasks();
+        isBeingModified = saveToStorageL;
+        MnameTask.value = nameTaskL;
+        MstatusTask.value = statusTaskL;
+        MpriorityTask.value = priorityTaskL;
+        MdueDateTask.value = dueDateTaskL;
+        MdescriptionTask.value = descriptionTaskL;
     });
 
     holderDiv.appendChild(taskName);
@@ -143,3 +156,30 @@ function createTask(nameTaskC, statusTaskC, priorityTaskC, dueDateTaskC, descrip
         loadTasks(nameTaskC, statusTaskC, priorityTaskC, dueDateTaskC, descriptionTaskC, saveToStorageC);
     };
 };
+
+submitModification.addEventListener('click', function () {
+    if (MnameTask.value === "") {
+        MnameTask.value = "Empty Task";
+    }
+    if (MstatusTask.value === "Select Status") {
+        MstatusTask.value = "toDo";
+    }
+    if (MpriorityTask.value === "Select Priority") {
+        MpriorityTask.value = "Low";
+    }
+    if (MdueDateTask.value === "") {
+        MdueDateTask.value = "9999-12-31";
+    }
+    if (MdescriptionTask.value === "") {
+        MdescriptionTask.value = "Description Empty";
+    }
+
+    removeFromLocalStorage(isBeingModified);
+    callTasks();
+    createTask(MnameTask.value, MstatusTask.value, MpriorityTask.value, MdueDateTask.value, MdescriptionTask.value);
+});
+
+remove.addEventListener('click', function () {
+    removeFromLocalStorage(isBeingModified);
+    callTasks();
+});

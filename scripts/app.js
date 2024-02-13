@@ -19,12 +19,24 @@ let medPriC = document.getElementById("medPriC");
 let lowPriC = document.getElementById("lowPriC");
 
 function callTasks() {
+    highPriC.innerHTML = "";
+    medPriC.innerHTML = "";
+    lowPriC.innerHTML = "";
+    highPriIP.innerHTML = "";
+    medPriIP.innerHTML = "";
+    lowPriIP.innerHTML = "";
+    highPriTD.innerHTML = "";
+    medPriTD.innerHTML = "";
+    lowPriTD.innerHTML = "";
+
     let popTasks = getLocalStorage();
     for (let i = 0; i < popTasks.length; i++) {
         let data = popTasks[i].split("/");
         loadTasks(data[0], data[1], data[2], data[3], data[4], popTasks[i]);
     };
 };
+
+callTasks();
 
 submitTask.addEventListener('click', function () {
     if (nameTask.value === "") {
@@ -44,33 +56,27 @@ submitTask.addEventListener('click', function () {
     }
 
     createTask(nameTask.value, statusTask.value, priorityTask.value, dueDateTask.value, descriptionTask.value);
-
-    nameTask.value = "";
-    statusTask.value = "Select Status";
-    priorityTask.value = "Select Priority";
-    dueDateTask.value = "";
-    descriptionTask.value = "";
 });
 
-function loadTasks(nameTask, statusTask, priorityTask, dueDateTask, descriptionTask, saveToStorage) {
+function loadTasks(nameTaskL, statusTaskL, priorityTaskL, dueDateTaskL, descriptionTaskL, saveToStorageL) {
     let holderDiv = document.createElement("div");
     holderDiv.className = "bg-blue-400 m-3";
 
     let taskName = document.createElement("p");
-    taskName.className = "text-left m-3 pt-3 pb-5";
-    taskName.textContent = nameTask;
+    taskName.className = "text-left mx-3 py-3 text-xl";
+    taskName.textContent = nameTaskL;
 
     let taskPriority = document.createElement("p");
-    taskPriority.className = "text-left m-3 py-1";
-    taskPriority.textContent = "Priority: " + priorityTask;
+    taskPriority.className = "text-left mx-3";
+    taskPriority.textContent = "Priority: " + priorityTaskL;
 
     let taskDueDate = document.createElement("p");
-    taskDueDate.className = "text-left m-3 py-1";
-    taskDueDate.textContent = "Due Date: " + dueDateTask;
+    taskDueDate.className = "text-left mx-3";
+    taskDueDate.textContent = "Due Date: " + dueDateTaskL;
 
     let taskDescription = document.createElement("p");
-    taskDescription.className = "text-left m-3 pt-1 pb-5";
-    taskDescription.textContent = "Description: " + descriptionTask;
+    taskDescription.className = "text-left mx-3 pt-2 pb-5";
+    taskDescription.textContent = "Description: " + descriptionTaskL;
 
     let taskOptions = document.createElement("button");
     // taskOptions.setAttribute("id", "defaultModalButton");
@@ -80,7 +86,7 @@ function loadTasks(nameTask, statusTask, priorityTask, dueDateTask, descriptionT
     taskOptions.className = "bg-red-400 w-[90%] mb-3 rounded-lg";
     taskOptions.innerText = "Task Options (ONLY REOMVES)";
     taskOptions.addEventListener('click', function (e) {
-        removeFromLocalStorage(saveToStorage);
+        removeFromLocalStorage(saveToStorageL);
         callTasks();
     });
 
@@ -90,47 +96,50 @@ function loadTasks(nameTask, statusTask, priorityTask, dueDateTask, descriptionT
     holderDiv.appendChild(taskDescription);
     holderDiv.appendChild(taskOptions);
 
-    if (statusTask === "complete") {
-        if (priorityTask === "Priority: High") {
+    if (statusTaskL === "complete") {
+        if (priorityTaskL === "High") {
             highPriC.appendChild(holderDiv);
-        } else if (priorityTask === "Priority: Medium") {
+        } else if (priorityTaskL === "Medium") {
             medPriC.appendChild(holderDiv);
         } else {
             lowPriC.appendChild(holderDiv);
         };
-    } else if (statusTask === "inProgress") {
-        if (priorityTask === "Priority: High") {
+    } else if (statusTaskL === "inProgress") {
+        if (priorityTaskL === "High") {
             highPriIP.appendChild(holderDiv);
-        } else if (priorityTask === "Priority: Medium") {
+        } else if (priorityTaskL === "Medium") {
             medPriIP.appendChild(holderDiv);
         } else {
             lowPriIP.appendChild(holderDiv);
         };
     } else {
-        if (priorityTask === "Priority: High") {
+        if (priorityTaskL === "High") {
             highPriTD.appendChild(holderDiv);
-        } else if (priorityTask === "Priority: Medium") {
+        } else if (priorityTaskL === "Medium") {
             medPriTD.appendChild(holderDiv);
         } else {
             lowPriTD.appendChild(holderDiv);
         };
     };
+
+    nameTask.value = "";
+    statusTask.value = "Select Status";
+    priorityTask.value = "Select Priority";
+    dueDateTask.value = "";
+    descriptionTask.value = "";
 };
 
-function createTask(nameTask, statusTask, priorityTask, dueDateTask, descriptionTask) {
+function createTask(nameTaskC, statusTaskC, priorityTaskC, dueDateTaskC, descriptionTaskC) {
     let checkTasks = getLocalStorage();
-    let saveToStorage = nameTask + "/" + statusTask + "/" + priorityTask + "/" + dueDateTask + "/" + descriptionTask
-    let bool = true;
+    let saveToStorageC = nameTaskC + "/" + statusTaskC + "/" + priorityTaskC + "/" + dueDateTaskC + "/" + descriptionTaskC;
+    let isInLS = false;
     for (let i = 0; i < checkTasks.length; i++) {
-        if(checkTasks[i] === saveToStorage){
-            bool = false;
-        }
-        if (bool === true) {
-            saveToLocalStorage(saveToStorage);
-            loadTasks(nameTask, statusTask, priorityTask, dueDateTask, descriptionTask, saveToStorage);
+        if (checkTasks[i] === saveToStorageC) {
+            isInLS = true;
         };
     };
-    callTasks();
+    if (isInLS === false) {
+        saveToLocalStorage(saveToStorageC);
+        loadTasks(nameTaskC, statusTaskC, priorityTaskC, dueDateTaskC, descriptionTaskC, saveToStorageC);
+    };
 };
-
-callTasks();

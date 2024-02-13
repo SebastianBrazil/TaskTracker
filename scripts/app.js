@@ -15,8 +15,6 @@ let MpriorityTask = document.getElementById("Mpriority");
 let MdueDateTask = document.getElementById("MdueDate");
 let MdescriptionTask = document.getElementById("Mdescription");
 
-let modifyModal = document.getElementById("modifyModal");
-
 let highPriTD = document.getElementById("highPriTD");
 let medPriTD = document.getElementById("medPriTD");
 let lowPriTD = document.getElementById("lowPriTD");

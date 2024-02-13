@@ -68,10 +68,10 @@ function loadTasks(nameTaskL, statusTaskL, priorityTaskL, dueDateTaskL, descript
     taskDescription.textContent = "Description: " + descriptionTaskL;
 
     let taskOptions = document.createElement("button");
-    // taskOptions.setAttribute("id", "modifyModalButton");
+    taskOptions.setAttribute("id", "modifyModalButton");
     taskOptions.setAttribute("data-modal-target", "modifyModal");
     taskOptions.setAttribute("data-modal-toggle", "modifyModal");
-    // taskOptions.type = "button";
+    taskOptions.type = "button";
     taskOptions.className = "bg-red-400 w-[90%] mb-3 rounded-lg";
     taskOptions.innerText = "Task Options";    
     taskOptions.addEventListener('click', function (e) {
